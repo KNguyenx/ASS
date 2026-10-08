@@ -27,7 +27,7 @@ body {
     margin: 0;
     background: var(--bg-primary);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
     display: flex;
     min-height: 100vh;
 }
@@ -98,14 +98,14 @@ body {
 }
 .tool-view {
     display: none;
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 .tool-view.active {
     display: block;
 }
 
-/* UI CÁC PANEL VÀ PHẦN TỬ CỦA TOOL */
+/* UI CÁC PANEL CỦA TOOL 1: THẦN TÔN QUYỀN */
 .panel {
     background: var(--bg-panel);
     border: 1px solid var(--border-color);
@@ -240,6 +240,100 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 .total { text-align: right; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); color: var(--text-muted); }
 .total b { font-size: 20px; color: var(--accent-purple); margin-left: 6px; }
 
+/* STYLES DÀNH RIÊNG CHO TOOL 2: HỨA THIỆU */
+.ht-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+.ht-box {
+    background-color: #262035;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.ht-box-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #48cae4;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+.ht-btn-extract {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ht-btn-extract:hover { background-color: #d62828; }
+.ht-drawn-container {
+    background-color: #120e1a;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ht-drawn-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1faee;
+    color: #1d3557;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+.ht-btn-select {
+    background-color: #2a9d8f;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.ht-btn-select:hover { background-color: #218380; }
+.ht-list-container {
+    background-color: #120e1a;
+    border-radius: 8px;
+    padding: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.ht-list-title {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+.ht-skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 6px;
+}
+.ht-skill-tag {
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 6px 2px;
+    border-radius: 4px;
+    font-weight: bold;
+    user-select: none;
+}
+.ht-skill-available { background-color: #10b981; color: #081c15; }
+.ht-skill-used { background-color: #333533; color: #7f7f7f; text-decoration: line-through; }
+
 @media (max-width: 768px) {
     body { flex-direction: column; }
     .sidebar { width: 100%; }
@@ -256,9 +350,15 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
         <h2>🛠️ BỘ TOOL TAM QUỐC SÁT</h2>
     </div>
     <ul class="tool-menu">
+        <!-- TOOL 1 -->
         <li class="tool-item active" onclick="switchTool('tool-ttq', this)">
-            <img src="tônquyen.webp" class="tool-icon" alt="icon">
+            <img src="https://ibb.co/VYDgvSWf" class="tool-icon" alt="icon">
             <span>Thần Tôn Quyền</span>
+        </li>
+        <!-- TOOL 2 -->
+        <li class="tool-item" onclick="switchTool('tool-huathieu', this)">
+            <img src="https://cdn-icons-png.flaticon.com/512/3094/3094833.png" class="tool-icon" alt="icon">
+            <span>Công Cụ Hứa Thiệu</span>
         </li>
     </ul>
 </div>
@@ -295,9 +395,56 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
         </div>
     </div>
 
+    <!-- TOOL 2: CÔNG CỤ HỨA THIỆU -->
+    <div id="tool-huathieu" class="tool-view">
+        <h1 style="text-align: center; margin-bottom: 20px; color: #fca311;">CÔNG CỤ KỸ NĂNG HỨA THIỆU</h1>
+        
+        <div class="ht-container">
+            <!-- Ô 1: Giai đoạn hành động -->
+            <div class="ht-box">
+                <div class="ht-box-title">GIAI ĐOẠN HÀNH ĐỘNG</div>
+                <button class="ht-btn-extract" onclick="extractSkills('action')">TRÍCH XUẤT (3 CHIÊU)</button>
+                <div class="ht-drawn-container" id="drawn-action">
+                    <i style="color: #6c757d; text-align: center; margin: auto;">Nhấn nút để trích xuất...</i>
+                </div>
+                <div class="ht-list-container">
+                    <div class="ht-list-title">Danh sách kỹ năng (<span id="count-action">0</span>)</div>
+                    <div class="ht-skill-grid" id="grid-action"></div>
+                </div>
+            </div>
+
+            <!-- Ô 2: Mở đầu giai đoạn kết thúc -->
+            <div class="ht-box">
+                <div class="ht-box-title">MỞ ĐẦU GIAI ĐOẠN KẾT THÚC</div>
+                <button class="ht-btn-extract" onclick="extractSkills('end')">TRÍCH XUẤT (3 CHIÊU)</button>
+                <div class="ht-drawn-container" id="drawn-end">
+                    <i style="color: #6c757d; text-align: center; margin: auto;">Nhấn nút để trích xuất...</i>
+                </div>
+                <div class="ht-list-container">
+                    <div class="ht-list-title">Danh sách kỹ năng (<span id="count-end">0</span>)</div>
+                    <div class="ht-skill-grid" id="grid-end"></div>
+                </div>
+            </div>
+
+            <!-- Ô 3: Sau khi nhận sát thương -->
+            <div class="ht-box">
+                <div class="ht-box-title">SAU KHI NHẬN SÁT THƯƠNG</div>
+                <button class="ht-btn-extract" onclick="extractSkills('damage')">TRÍCH XUẤT (3 CHIÊU)</button>
+                <div class="ht-drawn-container" id="drawn-damage">
+                    <i style="color: #6c757d; text-align: center; margin: auto;">Nhấn nút để trích xuất...</i>
+                </div>
+                <div class="ht-list-container">
+                    <div class="ht-list-title">Danh sách kỹ năng (<span id="count-damage">0</span>)</div>
+                    <div class="ht-skill-grid" id="grid-damage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
+/* LOGIC CHUYỂN TAB CÔNG CỤ */
 function switchTool(toolId, element) {
     document.querySelectorAll('.tool-view').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tool-item').forEach(el => el.classList.remove('active'));
@@ -306,6 +453,9 @@ function switchTool(toolId, element) {
     element.classList.add('active');
 }
 
+/* -------------------------------------------------------------
+   LOGIC TOOL 1: THẦN TÔN QUYỀN
+------------------------------------------------------------- */
 const CARDS = [
     "Sát", "Né", "Đào", "Rượu",
     "Vô Trung Sinh Hữu", "Vô Giải Khả Kích",
@@ -479,6 +629,113 @@ document.getElementById("clearCurrentBtn").onclick = clearCurrent;
 
 renderGrid();
 renderTabs();
+
+/* -------------------------------------------------------------
+   LOGIC TOOL 2: CÔNG CỤ HỨA THIỆU
+------------------------------------------------------------- */
+const rawDataHT = {
+    action: [
+        "Huyết Tế", "Thương Vũ", "Cường Tập", "Loạn Kích", "Tán Dao", "Thiên Nghĩa", "Phấn Việt", "Nghĩa Tuyệt", "Đạo Thư", "Hãm Trận",
+        "Phấn Tấn", "Chiến Tuyệt", "Man Tự", "Liên Kế", "Vũ Nhung", "Huyết Chiếu", "Liên Hoàn", "Tửu Trì", "Trấm Hủy", "Độc Võ",
+        "Quốc Sắc", "Khổ Nhục", "Tiến Ngôn", "Diệt Kế", "Chế Hành", "Công Tâm", "Trận Hành", "Tụng Từ", "Quá Luận", "Đốc Lương",
+        "Liên Tru", "Lược Mệnh", "Cơ Tiệp", "Bặc Toán", "Mẫn Tư", "Thừa Thưởng", "Phản Gián", "Tham Bái", "Họa Thủy", "Cẩm Hội",
+        "Đột Tập", "Nguy Minh", "Tụng Thục", "Phách Tập", "Cam Lộ", "Định Bạn", "Cuồng Phủ", "Kỳ Sách", "Cung Kỵ", "Hoài Dị",
+        "Khứ Tật", "Thiểm Tập", "Tồi Kiên", "Khiêu Hấn", "Thanh Nang", "Minh Sách", "An Quốc", "Lập Mục", "Kết Nhân", "An Tuất",
+        "Mật Chiếu", "Tư Viện", "Ly Gián", "Minh Giám", "Nhân Đức", "Đồ Nam", "Nghiêm Giáo", "Đế Minh", "Trực Gián", "Khu Hổ",
+        "Phi Quân", "Nộ Sân", "Khám Tập", "Đoạn Lương", "Hỏa Kế", "Phẩm Đệ", "Triều Phượng", "Doanh Thuyết", "Quỳnh Anh", "Tự Cố",
+        "Vi Ngỗ", "Trì Ứng", "Hoa Hỏa", "Lương Tú", "Sổ Tiến", "Tung Thế", "Phủ Lê", "Lương Yến", "Hội Trận", "Hung Toán",
+        "Lự Tâm", "Huệ Tế", "Bội Nghịch", "Ký Xuân", "Trường Khu", "Cứu Hãm", "Văn Xán"
+    ],
+    end: [
+        "Quận Binh", "Trực Ngôn", "Truân Giang", "Bế Nguyệt", "Tinh Sách", "Trấn Hành", "Mặc Chí", "Tội Luận", "Phục Gian", "Khốn Phấn",
+        "Cư Thủ", "Trấn Cốt", "Bỉnh Nhất", "Bí Kế", "Tuyệt Sách", "Huệ Dân", "Dụ Địch", "Khoan Thích", "Tiết Ứng", "Tùy Chinh",
+        "Trấn Quân", "Cử Tiến", "Đãi Yến", "Noãn Huệ", "Tẩm Tình", "Viện Hộ", "Sinh Tức", "Trầm Dũng"
+    ],
+    damage: [
+        "Yêu Danh", "Đàn Tâm", "Quy Tâm", "Bí Dục", "Phản Quỹ", "Cương Liệt", "Di Kế", "Gian Hùng", "Ân Oán", "Cát Cảnh",
+        "Trù Sách", "Tiết Mệnh", "Phóng Trục", "Tửu Thi", "Xưng Tượng", "Khôi Thác", "Vong Kích", "Ngự Sách", "Trí Trì", "Trí Ngu",
+        "Nhai Sài", "Vọng Quy", "Tiềm Long", "Định Thố", "Phối Khí", "Hoành Giang", "Kích Nghịch"
+    ]
+};
+
+const skillsDataHT = {
+    action: [...new Set(rawDataHT.action)].map(name => ({ name, used: false })),
+    end: [...new Set(rawDataHT.end)].map(name => ({ name, used: false })),
+    damage: [...new Set(rawDataHT.damage)].map(name => ({ name, used: false }))
+};
+
+const currentDrawnHT = { action: [], end: [], damage: [] };
+
+function renderGridHT(type) {
+    const gridEl = document.getElementById(`grid-${type}`);
+    const countEl = document.getElementById(`count-${type}`);
+    gridEl.innerHTML = '';
+
+    let availableCount = 0;
+    skillsDataHT[type].forEach(skill => {
+        if (!skill.used) availableCount++;
+        const tag = document.createElement('div');
+        tag.className = `ht-skill-tag ${skill.used ? 'ht-skill-used' : 'ht-skill-available'}`;
+        tag.textContent = skill.name;
+        gridEl.appendChild(tag);
+    });
+
+    countEl.textContent = `${availableCount}/${skillsDataHT[type].length}`;
+}
+
+function extractSkills(type) {
+    const availableSkills = skillsDataHT[type].filter(s => !s.used);
+    
+    if (availableSkills.length === 0) {
+        alert("Đã dùng hết tất cả kỹ năng trong ô này!");
+        return;
+    }
+
+    const shuffled = [...availableSkills].sort(() => 0.5 - Math.random());
+    currentDrawnHT[type] = shuffled.slice(0, 3);
+
+    renderDrawnUIHT(type);
+}
+
+function renderDrawnUIHT(type) {
+    const container = document.getElementById(`drawn-${type}`);
+    container.innerHTML = '';
+
+    if (currentDrawnHT[type].length === 0) {
+        container.innerHTML = '<i style="color: #6c757d; text-align: center; margin: auto;">Không có kỹ năng được rút...</i>';
+        return;
+    }
+
+    currentDrawnHT[type].forEach(skill => {
+        const item = document.createElement('div');
+        item.className = 'ht-drawn-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = skill.name;
+
+        const selectBtn = document.createElement('button');
+        selectBtn.className = 'ht-btn-select';
+        selectBtn.textContent = 'Chọn';
+        selectBtn.onclick = () => selectSkillHT(type, skill.name);
+
+        item.appendChild(nameSpan);
+        item.appendChild(selectBtn);
+        container.appendChild(item);
+    });
+}
+
+function selectSkillHT(type, skillName) {
+    const skillObj = skillsDataHT[type].find(s => s.name === skillName);
+    if (skillObj) {
+        skillObj.used = true;
+    }
+    currentDrawnHT[type] = [];
+    renderDrawnUIHT(type);
+    renderGridHT(type);
+}
+
+// Khởi tạo giao diện Tool Hứa Thiệu
+['action', 'end', 'damage'].forEach(type => renderGridHT(type));
 </script>
 
 </body>
