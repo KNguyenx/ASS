@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tool Thần Tôn Quyền - Tam Quốc Sát</title>
-
 <style>
 :root {
     --bg-primary: #1a1625;
@@ -16,54 +15,28 @@
     --accent-green: #10b981;
     --accent-green-hover: #059669;
     --accent-red: #ef4444;
-    --accent-red-hover: #dc2626;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --border-color: #43385d;
     --border-highlight: #6b5299;
 }
-
-* {
-    box-sizing: border-box;
-    user-select: none;
-}
-
+* { box-sizing: border-box; user-select: none; }
 body {
     margin: 0;
     background: var(--bg-primary);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     min-height: 100vh;
-    line-height: 1.5;
 }
-
 header {
     padding: 24px 16px;
     text-align: center;
     background: linear-gradient(180deg, #120e1a 0%, var(--bg-primary) 100%);
     border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
-
-h1 {
-    margin: 0 0 8px;
-    font-size: 26px;
-    letter-spacing: 1px;
-    color: #f3e8ff;
-    text-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
-}
-
-.sub {
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-.wrap {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px 16px;
-}
-
+h1 { margin: 0 0 8px; font-size: 26px; color: #f3e8ff; }
+.sub { color: var(--text-muted); font-size: 14px; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
 .panel {
     background: var(--bg-panel);
     border: 1px solid var(--border-color);
@@ -72,56 +45,31 @@ h1 {
     margin-bottom: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
-
-h2 {
-    margin: 0 0 8px;
-    font-size: 20px;
-    color: #e9d5ff;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.note {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-}
-
+h2 { margin: 0 0 8px; font-size: 20px; color: #e9d5ff; }
+.note { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 12px;
 }
-
 .card-btn {
     border: 1px solid var(--border-color);
     background: var(--bg-card);
     color: var(--text-main);
     border-radius: 12px;
-    padding: 14px 12px;
+    padding: 14px 10px;
     cursor: pointer;
     font-size: 15px;
     font-weight: 500;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     text-align: center;
+    transition: all 0.2s;
 }
-
 .card-btn:hover {
     background: var(--bg-card-hover);
     border-color: var(--border-highlight);
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
-
-.card-btn.hidden {
-    display: none;
-}
-
+.card-btn.hidden { display: none; }
 .actions {
     display: flex;
     gap: 10px;
@@ -130,7 +78,6 @@ h2 {
     padding-top: 16px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
-
 .action {
     border: 1px solid var(--border-highlight);
     border-radius: 10px;
@@ -141,51 +88,15 @@ h2 {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
 }
+.action:hover { background: var(--bg-card-hover); }
+.action.enter-btn { background: var(--accent-purple); border-color: var(--accent-purple-hover); color: #fff; font-weight: 600; }
+.action.enter-btn:hover { background: var(--accent-purple-hover); }
+.action.summary-btn { background: var(--accent-green); border-color: var(--accent-green-hover); color: #fff; font-weight: 600; }
+.action.summary-btn:hover { background: var(--accent-green-hover); }
+.action.reset { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; margin-left: auto; }
+.action.reset:hover { background: var(--accent-red); color: #fff; }
 
-.action:hover {
-    background: var(--bg-card-hover);
-    transform: translateY(-1px);
-}
-
-.action.enter-btn {
-    background: var(--accent-purple);
-    border-color: var(--accent-purple-hover);
-    color: #fff;
-    font-weight: 600;
-}
-
-.action.enter-btn:hover {
-    background: var(--accent-purple-hover);
-}
-
-.action.summary-btn {
-    background: var(--accent-green);
-    border-color: var(--accent-green-hover);
-    color: #fff;
-    font-weight: 600;
-}
-
-.action.summary-btn:hover {
-    background: var(--accent-green-hover);
-}
-
-.action.reset {
-    background: rgba(239, 68, 68, 0.15);
-    border-color: rgba(239, 68, 68, 0.4);
-    color: #fca5a5;
-    margin-left: auto;
-}
-
-.action.reset:hover {
-    background: var(--accent-red);
-    color: #fff;
-}
-
-/* Tab Navigation Styling */
 .tabs-header {
     display: flex;
     gap: 8px;
@@ -194,7 +105,6 @@ h2 {
     padding-bottom: 8px;
     margin-bottom: 16px;
 }
-
 .tab-btn {
     background: #1d1829;
     border: 1px solid var(--border-color);
@@ -208,51 +118,17 @@ h2 {
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.2s;
 }
-
-.tab-btn:hover {
-    color: var(--text-main);
-    border-color: var(--border-highlight);
-}
-
-.tab-btn.active {
-    background: var(--accent-purple);
-    color: #fff;
-    border-color: var(--accent-purple);
-}
-
-.tab-btn.summary-tab {
-    border-color: var(--accent-green);
-}
-
-.tab-btn.summary-tab.active {
-    background: var(--accent-green);
-    color: #fff;
-}
-
-.tab-close {
-    background: transparent;
-    border: none;
-    color: inherit;
-    font-size: 12px;
-    cursor: pointer;
-    opacity: 0.7;
-    border-radius: 50%;
-    padding: 2px 4px;
-}
-
-.tab-close:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.2);
-}
+.tab-btn.active { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); }
+.tab-btn.summary-tab { border-color: var(--accent-green); }
+.tab-btn.summary-tab.active { background: var(--accent-green); color: #fff; }
+.tab-close { background: transparent; border: none; color: inherit; cursor: pointer; font-size: 12px; padding: 2px 4px; }
 
 .summary {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
 }
-
 .item {
     display: flex;
     justify-content: space-between;
@@ -262,12 +138,7 @@ h2 {
     border-radius: 10px;
     padding: 10px 14px;
 }
-
-.item-name {
-    font-weight: 600;
-    color: #f3e8ff;
-}
-
+.item-name { font-weight: 600; color: #f3e8ff; }
 .count {
     font-weight: 700;
     font-size: 13px;
@@ -276,29 +147,9 @@ h2 {
     border-radius: 20px;
     padding: 3px 10px;
 }
-
-.empty {
-    color: var(--text-muted);
-    padding: 20px 0;
-    text-align: center;
-    font-style: italic;
-    grid-column: 1 / -1;
-}
-
-.total {
-    text-align: right;
-    margin-top: 16px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-.total b {
-    font-size: 22px;
-    color: var(--accent-purple);
-    margin-left: 6px;
-}
+.empty { color: var(--text-muted); padding: 20px 0; text-align: center; font-style: italic; grid-column: 1 / -1; }
+.total { text-align: right; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); color: var(--text-muted); }
+.total b { font-size: 20px; color: var(--accent-purple); margin-left: 6px; }
 
 @media (max-width: 600px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
@@ -308,20 +159,200 @@ h2 {
 }
 </style>
 </head>
-
 <body>
 
 <header>
     <h1>⚔ TOOL THẦN TÔN QUYỀN ⚔</h1>
-    <div class="sub">
-        Chọn danh bài → Nhấn Enter tạo Tab Người chơi → Nhấn "Tổng Kết" để tự lọc các danh bài khác nhau
-    </div>
+    <div class="sub">Chọn danh bài → Nhấn Enter tạo Tab → Bấm "Tổng Kết" để tự động chọn các danh bài khác nhau</div>
 </header>
 
 <div class="wrap">
 
-    <!-- BẢNG CHỌN BÀI HIỆN TẠI -->
     <div class="panel">
         <h2>🎴 Chọn danh bài đang chọn</h2>
-        <div class="note">
-            Nhấp chọn danh bài. Nhấn phím <b>ENTER</b> để chốt bài cho Người chơi.
+        <div class="note">Nhấp chọn danh bài. Nhấn phím <b>ENTER</b> để chốt bài cho Người chơi. Nhấn <b>Tổng Kết</b> khi hoàn tất.</div>
+
+        <div id="cardGrid" class="grid"></div>
+
+        <div class="actions">
+            <button type="button" class="action enter-btn" id="confirmEnterBtn">↵ Tạo Tab (ENTER)</button>
+            <button type="button" class="action summary-btn" id="finalizeSummaryBtn">🏆 Tổng Kết Bài Khác Nhau</button>
+            <button type="button" class="action" id="undoBtn">↩ Hoàn tác lá vừa chọn</button>
+            <button type="button" class="action reset" id="clearCurrentBtn">↻ Bỏ chọn hiện tại</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>👥 Danh sách Tab Người Chơi & Tổng Kết</h2>
+        <div id="tabsHeader" class="tabs-header"></div>
+        <div id="summary" class="summary"></div>
+        <div id="total" class="total"></div>
+    </div>
+
+</div>
+
+<script>
+const CARDS = [
+    "Sát", "Né", "Đào", "Rượu",
+    "Vô Trung Sinh Hữu", "Vô Giải Khả Kích",
+    "Thuận Thủ Khiên Dương", "Quá Hà Sách Kiều",
+    "Tá Đao Sát Nhân", "Hỏa Công", "Quyết Đấu",
+    "Nam Man Nhập Xâm", "Vạn Tiễn Tề Phát",
+    "Đào Viên Kết Nghĩa", "Xích Sắt Liên Hoàn"
+];
+
+let currentSelection = [];
+let playerTabs = [];
+let activeTabIndex = 0;
+let playerCounter = 1;
+
+try {
+    const savedPlayers = localStorage.getItem("ttq_playerTabs");
+    const savedCounter = localStorage.getItem("ttq_counter");
+    if (savedPlayers) playerTabs = JSON.parse(savedPlayers);
+    if (savedCounter) playerCounter = parseInt(savedCounter, 10);
+} catch (e) {
+    console.error(e);
+}
+
+function saveData() {
+    try {
+        localStorage.setItem("ttq_playerTabs", JSON.stringify(playerTabs));
+        localStorage.setItem("ttq_counter", playerCounter.toString());
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function chooseCard(card) {
+    currentSelection.push(card);
+    renderGrid();
+}
+
+function undoCard() {
+    currentSelection.pop();
+    renderGrid();
+}
+
+function clearCurrent() {
+    currentSelection = [];
+    renderGrid();
+}
+
+function confirmPlayerTab() {
+    if (currentSelection.length === 0) {
+        alert("Vui lòng chọn ít nhất 1 lá bài trước khi nhấn Enter!");
+        return;
+    }
+    playerTabs.push({
+        type: 'player',
+        name: `Người Chơi ${playerCounter++}`,
+        cards: [...currentSelection]
+    });
+    activeTabIndex = playerTabs.length - 1;
+    currentSelection = [];
+    saveData();
+    renderGrid();
+    renderTabs();
+}
+
+function generateFinalSummary() {
+    if (playerTabs.length === 0) {
+        alert("Chưa có Người chơi nào để tổng kết!");
+        return;
+    }
+    playerTabs = playerTabs.filter(t => t.type !== 'summary');
+    let allCards = [];
+    playerTabs.forEach(p => allCards = allCards.concat(p.cards));
+    const uniqueCards = Array.from(new Set(allCards));
+
+    playerTabs.push({
+        type: 'summary',
+        name: '🏆 TỔNG KẾT (Bài Khác Nhau)',
+        uniqueCards: uniqueCards,
+        allCards: allCards
+    });
+
+    activeTabIndex = playerTabs.length - 1;
+    saveData();
+    renderTabs();
+}
+
+function removeTab(idx, e) {
+    e.stopPropagation();
+    if (confirm(`Xóa "${playerTabs[idx].name}"?`)) {
+        playerTabs.splice(idx, 1);
+        activeTabIndex = Math.max(0, playerTabs.length - 1);
+        saveData();
+        renderTabs();
+    }
+}
+
+function renderGrid() {
+    const grid = document.getElementById("cardGrid");
+    grid.innerHTML = "";
+    const counts = {};
+    currentSelection.forEach(c => counts[c] = (counts[c] || 0) + 1);
+
+    CARDS.forEach(card => {
+        const btn = document.createElement("button");
+        btn.className = "card-btn" + (counts[card] > 0 ? " hidden" : "");
+        btn.textContent = card;
+        btn.onclick = () => chooseCard(card);
+        grid.appendChild(btn);
+    });
+}
+
+function renderTabs() {
+    const tabsHeader = document.getElementById("tabsHeader");
+    const summary = document.getElementById("summary");
+    const totalElement = document.getElementById("total");
+
+    tabsHeader.innerHTML = "";
+    summary.innerHTML = "";
+
+    if (playerTabs.length === 0) {
+        summary.innerHTML = `<div class="empty">Chưa có Tab người chơi nào. Chọn bài rồi nhấn ENTER.</div>`;
+        totalElement.innerHTML = "";
+        return;
+    }
+
+    playerTabs.forEach((tab, idx) => {
+        const btn = document.createElement("button");
+        const isSum = tab.type === 'summary';
+        btn.className = `tab-btn ${idx === activeTabIndex ? 'active' : ''} ${isSum ? 'summary-tab' : ''}`;
+        btn.innerHTML = `<span>${tab.name}</span><button class="tab-close" onclick="removeTab(${idx}, event)">✕</button>`;
+        btn.onclick = () => { activeTabIndex = idx; renderTabs(); };
+        tabsHeader.appendChild(btn);
+    });
+
+    const activeTab = playerTabs[activeTabIndex];
+    if (activeTab) {
+        if (activeTab.type === 'summary') {
+            activeTab.uniqueCards.forEach((c, i) => {
+                summary.innerHTML += `<div class="item"><span class="item-name">${i + 1}. ${c}</span><span class="count" style="background:var(--accent-green)">Độc nhất</span></div>`;
+            });
+            totalElement.innerHTML = `Có <b>${activeTab.uniqueCards.length}</b> danh bài khác nhau (Tổng bài: ${activeTab.allCards.length} lá)`;
+        } else {
+            const counts = {};
+            activeTab.cards.forEach(c => counts[c] = (counts[c] || 0) + 1);
+            Object.entries(counts).forEach(([name, count]) => {
+                summary.innerHTML += `<div class="item"><span class="item-name">${name}</span><span class="count">${count} lá</span></div>`;
+            });
+            totalElement.innerHTML = `Tổng bài của <b>${activeTab.name}</b>: <b>${activeTab.cards.length}</b> lá`;
+        }
+    }
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); confirmPlayerTab(); } });
+document.getElementById("confirmEnterBtn").onclick = confirmPlayerTab;
+document.getElementById("finalizeSummaryBtn").onclick = generateFinalSummary;
+document.getElementById("undoBtn").onclick = undoCard;
+document.getElementById("clearCurrentBtn").onclick = clearCurrent;
+
+renderGrid();
+renderTabs();
+</script>
+
+</body>
+</html>
