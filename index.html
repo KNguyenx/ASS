@@ -13,6 +13,8 @@
     --bg-card-hover: #4a3e66;
     --accent-purple: #8b5cf6;
     --accent-purple-hover: #7c3aed;
+    --accent-green: #10b981;
+    --accent-green-hover: #059669;
     --accent-red: #ef4444;
     --accent-red-hover: #dc2626;
     --text-main: #f3f4f6;
@@ -36,7 +38,7 @@ body {
 }
 
 header {
-    padding: 28px 16px;
+    padding: 24px 16px;
     text-align: center;
     background: linear-gradient(180deg, #120e1a 0%, var(--bg-primary) 100%);
     border-bottom: 1px solid var(--border-color);
@@ -45,7 +47,7 @@ header {
 
 h1 {
     margin: 0 0 8px;
-    font-size: 28px;
+    font-size: 26px;
     letter-spacing: 1px;
     color: #f3e8ff;
     text-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
@@ -116,76 +118,8 @@ h2 {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.card-btn:active {
-    transform: translateY(0);
-}
-
 .card-btn.hidden {
     display: none;
-}
-
-.summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
-}
-
-.item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #1d1829;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 10px 14px;
-    transition: border-color 0.2s;
-}
-
-.item:hover {
-    border-color: var(--border-highlight);
-}
-
-.item-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.item-name {
-    font-weight: 600;
-    color: #f3e8ff;
-}
-
-.item-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.count {
-    font-weight: 700;
-    font-size: 13px;
-    background: var(--accent-purple);
-    color: #fff;
-    border-radius: 20px;
-    padding: 3px 10px;
-}
-
-.remove-single {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 16px;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 6px;
-    transition: all 0.15s;
-    line-height: 1;
-}
-
-.remove-single:hover {
-    color: var(--accent-red);
-    background: rgba(239, 68, 68, 0.1);
 }
 
 .actions {
@@ -217,6 +151,28 @@ h2 {
     transform: translateY(-1px);
 }
 
+.action.enter-btn {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple-hover);
+    color: #fff;
+    font-weight: 600;
+}
+
+.action.enter-btn:hover {
+    background: var(--accent-purple-hover);
+}
+
+.action.summary-btn {
+    background: var(--accent-green);
+    border-color: var(--accent-green-hover);
+    color: #fff;
+    font-weight: 600;
+}
+
+.action.summary-btn:hover {
+    background: var(--accent-green-hover);
+}
+
 .action.reset {
     background: rgba(239, 68, 68, 0.15);
     border-color: rgba(239, 68, 68, 0.4);
@@ -227,6 +183,98 @@ h2 {
 .action.reset:hover {
     background: var(--accent-red);
     color: #fff;
+}
+
+/* Tab Navigation Styling */
+.tabs-header {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.tab-btn {
+    background: #1d1829;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+    border-color: var(--border-highlight);
+}
+
+.tab-btn.active {
+    background: var(--accent-purple);
+    color: #fff;
+    border-color: var(--accent-purple);
+}
+
+.tab-btn.summary-tab {
+    border-color: var(--accent-green);
+}
+
+.tab-btn.summary-tab.active {
+    background: var(--accent-green);
+    color: #fff;
+}
+
+.tab-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+    border-radius: 50%;
+    padding: 2px 4px;
+}
+
+.tab-close:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1d1829;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #f3e8ff;
+}
+
+.count {
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--accent-purple);
+    color: #fff;
+    border-radius: 20px;
+    padding: 3px 10px;
 }
 
 .empty {
@@ -253,43 +301,10 @@ h2 {
 }
 
 @media (max-width: 600px) {
-    header {
-        padding: 20px 12px;
-    }
-
-    h1 {
-        font-size: 22px;
-    }
-
-    .wrap {
-        padding: 12px;
-    }
-
-    .panel {
-        padding: 14px;
-    }
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-
-    .card-btn {
-        font-size: 13px;
-        padding: 12px 6px;
-    }
-
-    .summary {
-        grid-template-columns: 1fr;
-    }
-
-    .actions {
-        flex-direction: column;
-    }
-
-    .action.reset {
-        margin-left: 0;
-    }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .summary { grid-template-columns: 1fr; }
+    .actions { flex-direction: column; }
+    .action.reset { margin-left: 0; }
 }
 </style>
 </head>
@@ -299,210 +314,14 @@ h2 {
 <header>
     <h1>⚔ TOOL THẦN TÔN QUYỀN ⚔</h1>
     <div class="sub">
-        Chọn danh bài → Tự động ẩn lá đã chọn → Hệ thống tự động tổng hợp số lượng
+        Chọn danh bài → Nhấn Enter tạo Tab Người chơi → Nhấn "Tổng Kết" để tự lọc các danh bài khác nhau
     </div>
 </header>
 
 <div class="wrap">
 
+    <!-- BẢNG CHỌN BÀI HIỆN TẠI -->
     <div class="panel">
-        <h2>🎴 Chọn danh bài</h2>
+        <h2>🎴 Chọn danh bài đang chọn</h2>
         <div class="note">
-            Nhấp vào tên lá bài bên dưới để ghi nhận. Bài đã chọn sẽ tự động ẩn khỏi danh sách lựa chọn.
-        </div>
-
-        <div id="cardGrid" class="grid"></div>
-
-        <div class="actions">
-            <button type="button" class="action" id="undoBtn">
-                ↩ Hoàn tác lựa chọn cuối
-            </button>
-            <button type="button" class="action reset" id="resetBtn">
-                ↻ Reset chọn lại từ đầu
-            </button>
-        </div>
-    </div>
-
-    <div class="panel">
-        <h2>📊 Danh bài đã chọn</h2>
-        <div id="summary" class="summary"></div>
-        <div id="total" class="total"></div>
-    </div>
-
-</div>
-
-<script>
-const CARDS = [
-    "Sát",
-    "Né",
-    "Đào",
-    "Rượu",
-    "Vô Trung Sinh Hữu",
-    "Vô Giải Khả Kích",
-    "Thuận Thủ Khiên Dương",
-    "Quá Hà Sách Kiều",
-    "Tá Đao Sát Nhân",
-    "Hỏa Công",
-    "Quyết Đấu",
-    "Nam Man Nhập Xâm",
-    "Vạn Tiễn Tề Phát",
-    "Đào Viên Kết Nghĩa",
-    "Xích Sắt Liên Hoàn"
-];
-
-let selected = [];
-
-try {
-    const saved = localStorage.getItem("thanTonQuyen_selected");
-    if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-            selected = parsed;
-        }
-    }
-} catch (error) {
-    console.error("Không thể đọc dữ liệu:", error);
-    selected = [];
-}
-
-function save() {
-    try {
-        localStorage.setItem("thanTonQuyen_selected", JSON.stringify(selected));
-    } catch (error) {
-        console.error("Không thể lưu dữ liệu:", error);
-    }
-}
-
-function choose(card) {
-    selected.push(card);
-    save();
-    render();
-}
-
-function undoLast() {
-    if (selected.length === 0) return;
-    selected.pop();
-    save();
-    render();
-}
-
-function removeCardType(cardName) {
-    selected = selected.filter(item => item !== cardName);
-    save();
-    render();
-}
-
-function resetAll() {
-    if (selected.length === 0) return;
-    const confirmed = confirm("Bạn có chắc chắn muốn xóa toàn bộ danh bài đã chọn không?");
-    if (!confirmed) return;
-    selected = [];
-    save();
-    render();
-}
-
-function getCounts() {
-    const counts = {};
-    selected.forEach(card => {
-        counts[card] = (counts[card] || 0) + 1;
-    });
-    return counts;
-}
-
-function renderCards(counts) {
-    const grid = document.getElementById("cardGrid");
-    grid.innerHTML = "";
-
-    CARDS.forEach(card => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "card-btn";
-        button.textContent = card;
-
-        if (counts[card] > 0) {
-            button.classList.add("hidden");
-        }
-
-        button.addEventListener("click", () => choose(card));
-        grid.appendChild(button);
-    });
-}
-
-function renderSummary(counts) {
-    const summary = document.getElementById("summary");
-    summary.innerHTML = "";
-
-    const entries = Object.entries(counts);
-
-    if (entries.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        empty.textContent = "Chưa chọn danh bài nào.";
-        summary.appendChild(empty);
-        return;
-    }
-
-    entries.forEach(([name, count]) => {
-        const item = document.createElement("div");
-        item.className = "item";
-
-        const leftDiv = document.createElement("div");
-        leftDiv.className = "item-left";
-
-        const nameElement = document.createElement("span");
-        nameElement.className = "item-name";
-        nameElement.textContent = name;
-
-        leftDiv.appendChild(nameElement);
-
-        const rightDiv = document.createElement("div");
-        rightDiv.className = "item-right";
-
-        const countElement = document.createElement("span");
-        countElement.className = "count";
-        countElement.textContent = count + " lá";
-
-        const removeBtn = document.createElement("button");
-        removeBtn.type = "button";
-        removeBtn.className = "remove-single";
-        removeBtn.innerHTML = "&#10005;";
-        removeBtn.title = "Xóa loại bài này";
-        removeBtn.addEventListener("click", () => removeCardType(name));
-
-        rightDiv.appendChild(countElement);
-        rightDiv.appendChild(removeBtn);
-
-        item.appendChild(leftDiv);
-        item.appendChild(rightDiv);
-
-        summary.appendChild(item);
-    });
-}
-
-function renderTotal() {
-    const totalElement = document.getElementById("total");
-    const total = selected.length;
-
-    if (total === 0) {
-        totalElement.innerHTML = "";
-        return;
-    }
-
-    totalElement.innerHTML = "Tổng cộng: <b>" + total + "</b> lá";
-}
-
-function render() {
-    const counts = getCounts();
-    renderCards(counts);
-    renderSummary(counts);
-    renderTotal();
-}
-
-document.getElementById("resetBtn").addEventListener("click", resetAll);
-document.getElementById("undoBtn").addEventListener("click", undoLast);
-
-render();
-</script>
-
-</body>
-</html>
+            Nhấp chọn danh bài. Nhấn phím <b>ENTER</b> để chốt bài cho Người chơi.
