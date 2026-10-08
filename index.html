@@ -47,6 +47,37 @@ h1 { margin: 0 0 8px; font-size: 26px; color: #f3e8ff; }
 }
 h2 { margin: 0 0 8px; font-size: 20px; color: #e9d5ff; }
 .note { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+
+/* Ô nhập tên người chơi */
+.player-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.player-input-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e9d5ff;
+    white-space: nowrap;
+}
+.player-name-input {
+    flex: 1;
+    background: #120e1a;
+    border: 1px solid var(--border-highlight);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text-main);
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s;
+    user-select: text;
+}
+.player-name-input:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -156,6 +187,7 @@ h2 { margin: 0 0 8px; font-size: 20px; color: #e9d5ff; }
     .summary { grid-template-columns: 1fr; }
     .actions { flex-direction: column; }
     .action.reset { margin-left: 0; }
+    .player-input-group { flex-direction: column; align-items: stretch; }
 }
 </style>
 </head>
@@ -163,14 +195,20 @@ h2 { margin: 0 0 8px; font-size: 20px; color: #e9d5ff; }
 
 <header>
     <h1>⚔ TOOL THẦN TÔN QUYỀN ⚔</h1>
-    <div class="sub">Chọn danh bài → Nhấn Enter tạo Tab → Bấm "Tổng Kết" để tự động chọn các danh bài khác nhau</div>
+    <div class="sub">Nhập tên → Chọn danh bài → Nhấn Enter tạo Tab → Bấm "Tổng Kết" để lọc các danh bài khác nhau</div>
 </header>
 
 <div class="wrap">
 
     <div class="panel">
         <h2>🎴 Chọn danh bài đang chọn</h2>
-        <div class="note">Nhấp chọn danh bài. Nhấn phím <b>ENTER</b> để chốt bài cho Người chơi. Nhấn <b>Tổng Kết</b> khi hoàn tất.</div>
+        <div class="note">Nhập tên Tab (hoặc để trống), nhấp chọn danh bài. Nhấn phím <b>ENTER</b> để chốt bài.</div>
+
+        <!-- Ô nhập tên cho Tab/Người chơi -->
+        <div class="player-input-group">
+            <label for="playerNameInput">👤 Tên Tab/Người chơi:</label>
+            <input type="text" id="playerNameInput" class="player-name-input" placeholder="Ví dụ: Anh A, Người chơi 1, Bàn 2... (Để trống tự tạo tên)" autocomplete="off">
+        </div>
 
         <div id="cardGrid" class="grid"></div>
 
@@ -244,13 +282,25 @@ function confirmPlayerTab() {
         alert("Vui lòng chọn ít nhất 1 lá bài trước khi nhấn Enter!");
         return;
     }
+
+    const inputElem = document.getElementById("playerNameInput");
+    let customName = inputElem.value.trim();
+
+    // Nếu người dùng không nhập tên, dùng tên mặc định "Người Chơi X"
+    if (!customName) {
+        customName = `Người Chơi ${playerCounter++}`;
+    }
+
     playerTabs.push({
         type: 'player',
-        name: `Người Chơi ${playerCounter++}`,
+        name: customName,
         cards: [...currentSelection]
     });
+
     activeTabIndex = playerTabs.length - 1;
     currentSelection = [];
+    inputElem.value = ""; // Xóa ô nhập tên sau khi tạo thành công
+
     saveData();
     renderGrid();
     renderTabs();
@@ -344,7 +394,13 @@ function renderTabs() {
     }
 }
 
-document.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); confirmPlayerTab(); } });
+document.addEventListener("keydown", e => { 
+    if (e.key === "Enter") { 
+        e.preventDefault(); 
+        confirmPlayerTab(); 
+    } 
+});
+
 document.getElementById("confirmEnterBtn").onclick = confirmPlayerTab;
 document.getElementById("finalizeSummaryBtn").onclick = generateFinalSummary;
 document.getElementById("undoBtn").onclick = undoCard;
