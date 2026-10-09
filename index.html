@@ -334,7 +334,7 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 .ht-skill-available { background-color: #10b981; color: #081c15; }
 .ht-skill-used { background-color: #333533; color: #7f7f7f; text-decoration: line-through; }
 
-/* STYLES DÀNH RIÊNG CHO TOOL 3: CÁT HUYỀN (CẬP NHẬT MỚI) */
+/* STYLES DÀNH RIÊNG CHO TOOL 3: CÁT HUYỀN */
 .ch-container {
     max-width: 800px;
     margin: 0 auto;
@@ -436,13 +436,51 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 .ch-result-title { font-size: 20px; color: #10b981; font-weight: bold; margin-bottom: 10px; }
 .ch-result-detail { font-size: 15px; line-height: 1.6; }
 
-/* BẢNG ĐÈN BÁO ĐỎ / ĐEN CHO CÁT HUYỀN */
 .ch-badge-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 15px 0; }
 .ch-badge { display: inline-block; padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 15px; transition: all 0.3s ease; }
 .ch-badge-red { background: #ef4444; color: white; box-shadow: 0 0 5px #ef4444; }
 .ch-badge-black { background: #374151; color: white; border: 1px solid #6b7280; box-shadow: 0 0 5px #6b7280; }
 .ch-badge.active { opacity: 1; transform: scale(1.08); box-shadow: 0 0 15px currentColor; }
 .ch-badge.inactive { opacity: 0.2; transform: scale(0.92); filter: grayscale(80%); }
+
+/* STYLES DÀNH RIÊNG CHO TOOL 4: MƯU TƯ MÃ SƯ */
+.tms-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--bg-panel);
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.tms-btn-container { text-align: center; margin-bottom: 25px; }
+.tms-btn {
+    background-color: #8b0000;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.tms-btn:hover { background-color: #a00000; transform: scale(1.02); }
+.tms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.tms-card {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px;
+    background: #120e1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.tms-card-rank { font-size: 18px; font-weight: bold; width: 30px; color: #f3e8ff; }
+.tms-card-suit { font-size: 20px; margin: 0 8px; }
+.tms-red { color: #ef4444; }
+.tms-black { color: #9ca3af; }
+.tms-card-name { font-weight: 600; flex-grow: 1; text-align: right; color: var(--text-main); }
 
 @media (max-width: 768px) {
     body { flex-direction: column; }
@@ -474,6 +512,11 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
         <li class="tool-item" onclick="switchTool('tool-cathuyen', this)">
             <img src="https://cdn-icons-png.flaticon.com/512/1021/1021264.png" class="tool-icon" alt="icon">
             <span>Cát Huyền</span>
+        </li>
+        <!-- TOOL 4 -->
+        <li class="tool-item" onclick="switchTool('tool-tumasu', this)">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" class="tool-icon" alt="icon">
+            <span>Mưu Tư Mã Sư</span>
         </li>
     </ul>
 </div>
@@ -619,7 +662,6 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
                 <div id="resultBox" class="ch-result-box">
                     <div id="resultTitle" class="ch-result-title"></div>
                     
-                    <!-- Đèn báo trạng thái Đỏ / Đen (Ản con số) -->
                     <div class="ch-badge-container">
                         <span id="badgeRed" class="ch-badge ch-badge-red">🔴 TIÊU KÝ ĐỎ</span>
                         <span id="badgeBlack" class="ch-badge ch-badge-black">⚫ TIÊU KÝ ĐEN</span>
@@ -628,6 +670,18 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
                     <div id="resultDetail" class="ch-result-detail"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- TOOL 4: MƯU TƯ MÃ SƯ -->
+    <div id="tool-tumasu" class="tool-view">
+        <div class="tms-container">
+            <h1 style="text-align: center; color: #ef4444; margin-bottom: 5px;">MƯU TƯ MÃ SƯ - TÂM TRẤN</h1>
+            <p class="note" style="text-align: center; margin-bottom: 20px;">Random 13 lá bài từ A đến K (Mỗi điểm 1 lá)</p>
+            <div class="tms-btn-container">
+                <button class="tms-btn" onclick="drawCardsTMS()">🎲 RÚT BÀI NGẪU NHIÊN</button>
+            </div>
+            <div id="resultTMS" class="tms-grid"></div>
         </div>
     </div>
 
@@ -927,7 +981,7 @@ function selectSkillHT(type, skillName) {
 ['action', 'end', 'damage'].forEach(type => renderGridHT(type));
 
 /* -------------------------------------------------------------
-   LOGIC TOOL 3: CÁT HUYỀN (CẬP NHẬT MỚI NHẤT)
+   LOGIC TOOL 3: CÁT HUYỀN
 ------------------------------------------------------------- */
 let totalPlayersCount = 10;
 let catHuyenSeat = 1;
@@ -1111,8 +1165,53 @@ function luyenDan() {
     }
 }
 
-// Khởi tạo danh sách vị trí Tool Cát Huyền khi load
 updateSeatOptionsCH();
+
+/* -------------------------------------------------------------
+   LOGIC TOOL 4: MƯU TƯ MÃ SƯ
+------------------------------------------------------------- */
+const cardsDataTMS = {
+    "A": [["♥", "Đào Viên Kết Nghĩa"], ["♥", "Vạn Tiễn Tề Phát"], ["♥", "Vô Giải Khả Kích"], ["♦", "Gia Cát Liên Nỏ"], ["♦", "Quyết Đấu"], ["♦", "Chu Tước Vũ Phiến"], ["♣", "Gia Cát Liên Nỏ"], ["♣", "Quyết Đấu"], ["♣", "Bạch Ngân Sư Tử"], ["♠", "Thiểm Điện"], ["♠", "Quyết Đấu"], ["♠", "Cổ Đỉnh Đao"]],
+    "2": [["♥", "Thiểm"], ["♥", "Thiểm"], ["♥", "Hỏa Công"], ["♦", "Thiểm"], ["♦", "Đào"], ["♦", "Đào"], ["♣", "Sát"], ["♣", "Bát Quái Trận"], ["♣", "Đằng Giáp"], ["♠", "Thư Hùng Song Cổ Kiếm"], ["♠", "Bát Quái Trận"], ["♠", "Hàn Băng Kiếm"]],
+    "3": [["♥", "Đào"], ["♥", "Ngũ Cốc Phong Đăng"], ["♥", "Hỏa Công"], ["♦", "Thiểm"], ["♦", "Thuận Thủ Khiên Dương"], ["♦", "Đào"], ["♣", "Sát"], ["♣", "Quá Hà Sách Kiều"], ["♣", "Rượu"], ["♠", "Thuận Thủ Khiên Dương"], ["♠", "Quá Hà Sách Kiều"], ["♠", "Rượu"]],
+    "4": [["♥", "Đào"], ["♥", "Ngũ Cốc Phong Đăng"], ["♥", "Hỏa Sát"], ["♦", "Thiểm"], ["♦", "Thuận Thủ Khiên Dương"], ["♦", "Hỏa Sát"], ["♣", "Sát"], ["♣", "Quá Hà Sách Kiều"], ["♣", "Binh Lương Thốn Đoạn"], ["♠", "Thuận Thủ Khiên Dương"], ["♠", "Quá Hà Sách Kiều"], ["♠", "Lôi Sát"]],
+    "5": [["♥", "Xích Thố"], ["♥", "Kỳ Lân Cung"], ["♥", "Đào"], ["♦", "Thiểm"], ["♦", "Phá Thạch Phủ"], ["♦", "Hỏa Sát"], ["♦", "Mộc Lưu Ngưu Mã"], ["♣", "Đích Lô"], ["♣", "Sát"], ["♣", "Lôi Sát"], ["♠", "Tuyệt Ảnh"], ["♠", "Thanh Long Yển Nguyệt Đao"], ["♠", "Lôi Sát"]],
+    "6": [["♥", "Đào"], ["♥", "Lạc Bất Tư Thục"], ["♥", "Đào"], ["♦", "Sát"], ["♦", "Thiểm"], ["♦", "Thiểm"], ["♣", "Sát"], ["♣", "Lạc Bất Tư Thục"], ["♣", "Lôi Sát"], ["♠", "Thanh Công Kiếm"], ["♠", "Lạc Bất Tư Thục"], ["♠", "Lôi Sát"]],
+    "7": [["♥", "Đào"], ["♥", "Vô Trung Sinh Hữu"], ["♥", "Hỏa Sát"], ["♦", "Sát"], ["♦", "Thiểm"], ["♦", "Thiểm"], ["♣", "Sát"], ["♣", "Nam Man Nhập Xâm"], ["♣", "Lôi Sát"], ["♠", "Sát"], ["♠", "Nam Man Nhập Xâm"], ["♠", "Lôi Sát"]],
+    "8": [["♥", "Đào"], ["♥", "Vô Trung Sinh Hữu"], ["♥", "Thiểm"], ["♦", "Sát"], ["♦", "Thiểm"], ["♦", "Thiểm"], ["♣", "Sát"], ["♣", "Sát"], ["♣", "Lôi Sát"], ["♠", "Sát"], ["♠", "Sát"], ["♠", "Lôi Sát"]],
+    "9": [["♥", "Đào"], ["♥", "Vô Trung Sinh Hữu"], ["♥", "Thiểm"], ["♦", "Sát"], ["♦", "Sát"], ["♦", "Rượu"], ["♣", "Sát"], ["♣", "Sát"], ["♣", "Rượu"], ["♠", "Sát"], ["♠", "Sát"], ["♠", "Rượu"]],
+    "10": [["♥", "Sát"], ["♥", "Sát"], ["♥", "Hỏa Sát"], ["♦", "Sát"], ["♦", "Thiểm"], ["♦", "Thiểm"], ["♣", "Sát"], ["♣", "Sát"], ["♣", "Thiết Tác Liên Hoàn"], ["♠", "Sát"], ["♠", "Sát"], ["♠", "Binh Lương Thốn Đoạn"]],
+    "J": [["♥", "Sát"], ["♥", "Vô Trung Sinh Hữu"], ["♥", "Thiểm"], ["♦", "Thiểm"], ["♦", "Thiểm"], ["♦", "Thiểm"], ["♣", "Sát"], ["♣", "Sát"], ["♣", "Thiết Tác Liên Hoàn"], ["♠", "Thuận Thủ Khiên Dương"], ["♠", "Vô Giải Khả Kích"], ["♠", "Thiết Tác Liên Hoàn"]],
+    "Q": [["♥", "Đào"], ["♥", "Quá Hà Sách Kiều"], ["♥", "Thiểm Điện"], ["♦", "Đào"], ["♦", "Phương Thiên Họa Kích"], ["♦", "Hỏa Công"], ["♣", "Tá Đao Sát Nhân"], ["♣", "Vô Giải Khả Kích"], ["♣", "Thiết Tác Liên Hoàn"], ["♠", "Trượng Bát Xà Mâu"], ["♠", "Quá Hà Sách Kiều"], ["♠", "Thiết Tác Liên Hoàn"]],
+    "K": [["♥", "Thiểm"], ["♥", "Trảo Hoàng Phi Điện"], ["♥", "Vô Giải Khả Kích"], ["♦", "Sát"], ["♦", "Tử Tuynh"], ["♦", "Hoa Lưu"], ["♣", "Tá Đao Sát Nhân"], ["♣", "Vô Giải Khả Kích"], ["♣", "Thiết Tác Liên Hoàn"], ["♠", "Nam Man Nhập Xâm"], ["♠", "Đại Uyển"], ["♠", "Vô Giải Khả Kích"]]
+};
+
+const ranksTMS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+function drawCardsTMS() {
+    const container = document.getElementById('resultTMS');
+    container.innerHTML = '';
+
+    ranksTMS.forEach(rank => {
+        const options = cardsDataTMS[rank];
+        const selected = options[Math.floor(Math.random() * options.length)];
+        const suit = selected[0];
+        const name = selected[1];
+        const colorClass = (suit === '♥' || suit === '♦') ? 'tms-red' : 'tms-black';
+
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'tms-card';
+        cardDiv.innerHTML = `
+            <span class="tms-card-rank">${rank}</span>
+            <span class="tms-card-suit ${colorClass}">${suit}</span>
+            <span class="tms-card-name">${name}</span>
+        `;
+        container.appendChild(cardDiv);
+    });
+}
+
+// Rút bài sẵn khi bật Tool Mưu Tư Mã Sư lần đầu
+drawCardsTMS();
 </script>
 
 </body>
