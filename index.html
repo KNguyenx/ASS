@@ -334,6 +334,111 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 .ht-skill-available { background-color: #10b981; color: #081c15; }
 .ht-skill-used { background-color: #333533; color: #7f7f7f; text-decoration: line-through; }
 
+/* STYLES DÀNH RIÊNG CHO TOOL 3: CÁT HUYỀN */
+.ch-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #262035;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.ch-step {
+    background: #1a1625;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+.ch-step label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: #e9d5ff;
+}
+.ch-step select, .ch-step input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-highlight);
+    background: #120e1a;
+    color: #fff;
+    outline: none;
+}
+.ch-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent-purple);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.ch-btn:hover { background: var(--accent-purple-hover); }
+.ch-btn:disabled { background: #555; cursor: not-allowed; }
+
+.ch-grid-seats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+@media (min-width: 600px) { .ch-grid-seats { grid-template-columns: repeat(5, 1fr); } }
+
+.ch-seat-card {
+    background: #120e1a;
+    border: 1px solid var(--border-highlight);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+}
+.ch-seat-card.me { border-color: var(--accent-purple); background: #322a45; }
+.ch-seat-title { font-weight: bold; margin-bottom: 8px; color: #e9d5ff; font-size: 13px; }
+
+.ch-btn-damage {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    padding: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+}
+.ch-btn-damage:hover { background: #dc2626; }
+
+.ch-dashboard {
+    background: #120e1a;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.ch-status-hidden { font-style: italic; color: var(--text-muted); font-size: 13px; margin-top: 5px; }
+
+.ch-result-box {
+    background: #120e1a;
+    border: 2px dashed #10b981;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 20px;
+    display: none;
+}
+.ch-result-title { font-size: 20px; color: #10b981; font-weight: bold; margin-bottom: 10px; }
+.ch-result-detail { font-size: 15px; line-height: 1.6; }
+.ch-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-weight: bold; margin: 2px; }
+.ch-badge-red { background: #ef4444; color: white; }
+.ch-badge-black { background: #374151; color: white; border: 1px solid #6b7280; }
+
 @media (max-width: 768px) {
     body { flex-direction: column; }
     .sidebar { width: 100%; }
@@ -358,7 +463,12 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
         <!-- TOOL 2 -->
         <li class="tool-item" onclick="switchTool('tool-huathieu', this)">
             <img src="https://cdn-icons-png.flaticon.com/512/3094/3094833.png" class="tool-icon" alt="icon">
-            <span> Hứa Thiệu</span>
+            <span>Hứa Thiệu</span>
+        </li>
+        <!-- TOOL 3 -->
+        <li class="tool-item" onclick="switchTool('tool-cathuyen', this)">
+            <img src="https://cdn-icons-png.flaticon.com/512/1021/1021264.png" class="tool-icon" alt="icon">
+            <span>Cát Huyền</span>
         </li>
     </ul>
 </div>
@@ -436,6 +546,71 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
                 <div class="ht-list-container">
                     <div class="ht-list-title">Danh sách kỹ năng (<span id="count-damage">0</span>)</div>
                     <div class="ht-skill-grid" id="grid-damage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOOL 3: CÁT HUYỀN -->
+    <div id="tool-cathuyen" class="tool-view">
+        <div class="ch-container">
+            <h1 style="color: #f1c40f; text-align: center;">Tool Hỗ Trợ Cát Huyền</h1>
+
+            <!-- BƯỚC 1 -->
+            <div id="step1" class="ch-step">
+                <h2 style="color: #e9d5ff; font-size: 18px; margin-bottom: 12px;">1. Cấu Hình Cát Huyền</h2>
+                <label for="mySeat">Chọn vị trí ngồi của Cát Huyền (1 - 10):</label>
+                <select id="mySeat">
+                    <option value="1">Vị trí 1 (Chủ Công)</option>
+                    <option value="2">Vị trí 2</option>
+                    <option value="3">Vị trí 3</option>
+                    <option value="4">Vị trí 4</option>
+                    <option value="5">Vị trí 5</option>
+                    <option value="6">Vị trí 6</option>
+                    <option value="7">Vị trí 7</option>
+                    <option value="8">Vị trí 8</option>
+                    <option value="9">Vị trí 9</option>
+                    <option value="10">Vị trí 10</option>
+                </select>
+
+                <label for="myRole">Chọn thân phận của Cát Huyền:</label>
+                <select id="myRole">
+                    <option value="ChuCong">Chủ Công</option>
+                    <option value="TrungThan">Trung Thần</option>
+                    <option value="PhanTac">Phản Tặc</option>
+                    <option value="NoiGian">Nội Gián</option>
+                </select>
+
+                <button class="ch-btn" onclick="setupCatHuyen()">Xác Nhận Cát Huyền</button>
+            </div>
+
+            <!-- BƯỚC 2 -->
+            <div id="step2" class="ch-step" style="display: none;">
+                <h2 style="color: #e9d5ff; font-size: 18px; margin-bottom: 12px;">2. Nhập Thân Phận Người Chơi Khác</h2>
+                <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">Nhập lần lượt thân phận từng người. Sau khi xác nhận thông tin sẽ được ẩn an toàn.</p>
+                <div id="rolesInputContainer"></div>
+                <button id="btnStartGame" class="ch-btn" onclick="startGame()" style="margin-top: 15px;" disabled>Bắt Đầu Trận Đấu</button>
+            </div>
+
+            <!-- BƯỚC 3 -->
+            <div id="step3" class="ch-step" style="display: none;">
+                <h2 style="color: #e9d5ff; font-size: 18px; margin-bottom: 12px;">3. Ghi Nhận Sát Thương & Luyện Đan</h2>
+                
+                <div class="ch-dashboard">
+                    <div>Tổng số tiêu ký tích lũy: <strong id="totalMarkers" style="color: #f1c40f; font-size: 20px;">0</strong></div>
+                    <div class="ch-status-hidden">🔒 Chi tiết tiêu ký Đỏ / Đen đang được ẩn bí mật!</div>
+                </div>
+
+                <div class="ch-grid-seats" id="gameSeatsGrid"></div>
+
+                <div style="margin-top: 25px;">
+                    <button class="ch-btn" onclick="luyenDan()" style="background: #10b981; color: #fff; font-size: 18px;">🔮 LUYỆN ĐAN (Xem Hiệu Quả)</button>
+                </div>
+
+                <!-- BẢNG KẾT QUẢ -->
+                <div id="resultBox" class="ch-result-box">
+                    <div id="resultTitle" class="ch-result-title"></div>
+                    <div id="resultDetail" class="ch-result-detail"></div>
                 </div>
             </div>
         </div>
@@ -631,7 +806,7 @@ renderGrid();
 renderTabs();
 
 /* -------------------------------------------------------------
-   LOGIC TOOL 2: CÔNG CỤ HỨA THIỆU
+   LOGIC TOOL 2: HỨA THIỆU
 ------------------------------------------------------------- */
 const rawDataHT = {
     action: [
@@ -734,8 +909,164 @@ function selectSkillHT(type, skillName) {
     renderGridHT(type);
 }
 
-// Khởi tạo giao diện Tool Hứa Thiệu
 ['action', 'end', 'damage'].forEach(type => renderGridHT(type));
+
+/* -------------------------------------------------------------
+   LOGIC TOOL 3: CÁT HUYỀN
+------------------------------------------------------------- */
+let catHuyenSeat = 1;
+let catHuyenRole = "";
+let playersCH = {}; 
+
+let redMarkers = 0;   
+let blackMarkers = 0; 
+
+function setupCatHuyen() {
+    catHuyenSeat = parseInt(document.getElementById('mySeat').value);
+    catHuyenRole = document.getElementById('myRole').value;
+
+    playersCH[catHuyenSeat] = catHuyenRole;
+
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+
+    renderRoleInputsCH();
+}
+
+function renderRoleInputsCH() {
+    const container = document.getElementById('rolesInputContainer');
+    container.innerHTML = "";
+
+    for (let i = 1; i <= 10; i++) {
+        if (i === catHuyenSeat) continue;
+
+        const div = document.createElement('div');
+        div.className = 'ch-seat-card';
+        div.style.marginBottom = '10px';
+        div.style.textAlign = 'left';
+
+        div.innerHTML = `
+            <div class="ch-seat-title">Vị trí ${i} ${i === 1 ? '(Chủ Công)' : ''}</div>
+            <select id="role_select_${i}">
+                <option value="">-- Chọn thân phận --</option>
+                <option value="ChuCong" ${i === 1 ? 'selected' : ''}>Chủ Công</option>
+                <option value="TrungThan">Trung Thần</option>
+                <option value="PhanTac">Phản Tặc</option>
+                <option value="NoiGian">Nội Gián</option>
+            </select>
+            <button type="button" id="btn_confirm_${i}" onclick="confirmRoleCH(${i})" style="padding: 6px 12px; font-size: 13px; background: var(--accent-purple); border:none; color:#fff; border-radius:6px; cursor:pointer;">Xác Nhận & Ẩn</button>
+            <span id="status_hidden_${i}" style="display:none; color: #10b981; font-weight: bold; margin-left: 10px;">✔ Đã ẩn</span>
+        `;
+        container.appendChild(div);
+
+        if (i === 1) {
+            playersCH[1] = "ChuCong";
+        }
+    }
+}
+
+function confirmRoleCH(seat) {
+    const select = document.getElementById(`role_select_${seat}`);
+    const role = select.value;
+    if (!role) {
+        alert("Vui lòng chọn thân phận!");
+        return;
+    }
+
+    playersCH[seat] = role;
+    select.style.display = 'none';
+    document.getElementById(`btn_confirm_${seat}`).style.display = 'none';
+    document.getElementById(`status_hidden_${seat}`).style.display = 'inline';
+
+    checkAllRolesEnteredCH();
+}
+
+function checkAllRolesEnteredCH() {
+    let count = Object.keys(playersCH).length;
+    if (count === 10) {
+        document.getElementById('btnStartGame').disabled = false;
+    }
+}
+
+function startGame() {
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'block';
+
+    renderGameGridCH();
+}
+
+function renderGameGridCH() {
+    const grid = document.getElementById('gameSeatsGrid');
+    grid.innerHTML = "";
+
+    for (let i = 1; i <= 10; i++) {
+        const card = document.createElement('div');
+        card.className = `ch-seat-card ${i === catHuyenSeat ? 'me' : ''}`;
+
+        let titleText = `Vị trí ${i}`;
+        if (i === catHuyenSeat) titleText += " (Cát Huyền)";
+
+        card.innerHTML = `
+            <div class="ch-seat-title">${titleText}</div>
+            <button class="ch-btn-damage" onclick="addDamageCH(${i})">💥 Nhận Dame</button>
+        `;
+        grid.appendChild(card);
+    }
+}
+
+function isSameFaction(role1, role2) {
+    if (role1 === "NoiGian" || role2 === "NoiGian") {
+        return false;
+    }
+    if ((role1 === "ChuCong" || role1 === "TrungThan") && (role2 === "ChuCong" || role2 === "TrungThan")) {
+        return true;
+    }
+    if (role1 === "PhanTac" && role2 === "PhanTac") {
+        return true;
+    }
+    return false;
+}
+
+function addDamageCH(seat) {
+    const targetRole = playersCH[seat];
+    const same = isSameFaction(catHuyenRole, targetRole);
+
+    if (same) {
+        redMarkers++;
+    } else {
+        blackMarkers++;
+    }
+
+    document.getElementById('totalMarkers').innerText = redMarkers + blackMarkers;
+    document.getElementById('resultBox').style.display = 'none';
+}
+
+function luyenDan() {
+    const total = redMarkers + blackMarkers;
+    const resultBox = document.getElementById('resultBox');
+    const title = document.getElementById('resultTitle');
+    const detail = document.getElementById('resultDetail');
+
+    resultBox.style.display = 'block';
+
+    let markerInfo = `Tổng tiêu ký: <strong>${total}</strong> (<span class="ch-badge ch-badge-red">${redMarkers} Đỏ</span> / <span class="ch-badge ch-badge-black">${blackMarkers} Đen</span>)<br><br>`;
+
+    if (total <= 3) {
+        title.innerText = "🔮 Kỹ Năng: \"Anh Tư\"";
+        detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #ef4444; font-weight: bold;'>[Đào]</span>.";
+    } else {
+        if (redMarkers > blackMarkers) {
+            title.innerText = "🔮 Kỹ Năng: \"Quan Tinh\"";
+            detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #f1c40f; font-weight: bold;'>[Vô Trung Sinh Hữu]</span>.";
+        } else if (blackMarkers > redMarkers) {
+            title.innerText = "🔮 Kỹ Năng: \"Trực Ngôn\"";
+            detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #3b82f6; font-weight: bold;'>[Thuận Thủ Khiên Dương]</span>.";
+        } else {
+            title.innerText = "🔮 Kỹ Năng: \"Công Tâm\"";
+            detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #ec4899; font-weight: bold;'>[Sát]</span> và <span style='color: #ef4444; font-weight: bold;'>[Quyết Đấu]</span>.";
+        }
+    }
+}
 </script>
 
 </body>
