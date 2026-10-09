@@ -334,7 +334,7 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 .ht-skill-available { background-color: #10b981; color: #081c15; }
 .ht-skill-used { background-color: #333533; color: #7f7f7f; text-decoration: line-through; }
 
-/* STYLES DÀNH RIÊNG CHO TOOL 3: CÁT HUYỀN */
+/* STYLES DÀNH RIÊNG CHO TOOL 3: CÁT HUYỀN (CẬP NHẬT MỚI) */
 .ch-container {
     max-width: 800px;
     margin: 0 auto;
@@ -435,9 +435,14 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 }
 .ch-result-title { font-size: 20px; color: #10b981; font-weight: bold; margin-bottom: 10px; }
 .ch-result-detail { font-size: 15px; line-height: 1.6; }
-.ch-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-weight: bold; margin: 2px; }
-.ch-badge-red { background: #ef4444; color: white; }
-.ch-badge-black { background: #374151; color: white; border: 1px solid #6b7280; }
+
+/* BẢNG ĐÈN BÁO ĐỎ / ĐEN CHO CÁT HUYỀN */
+.ch-badge-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 15px 0; }
+.ch-badge { display: inline-block; padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 15px; transition: all 0.3s ease; }
+.ch-badge-red { background: #ef4444; color: white; box-shadow: 0 0 5px #ef4444; }
+.ch-badge-black { background: #374151; color: white; border: 1px solid #6b7280; box-shadow: 0 0 5px #6b7280; }
+.ch-badge.active { opacity: 1; transform: scale(1.08); box-shadow: 0 0 15px currentColor; }
+.ch-badge.inactive { opacity: 0.2; transform: scale(0.92); filter: grayscale(80%); }
 
 @media (max-width: 768px) {
     body { flex-direction: column; }
@@ -558,20 +563,23 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
 
             <!-- BƯỚC 1 -->
             <div id="step1" class="ch-step">
-                <h2 style="color: #e9d5ff; font-size: 18px; margin-bottom: 12px;">1. Cấu Hình Cát Huyền</h2>
-                <label for="mySeat">Chọn vị trí ngồi của Cát Huyền (1 - 10):</label>
-                <select id="mySeat">
-                    <option value="1">Vị trí 1 (Chủ Công)</option>
-                    <option value="2">Vị trí 2</option>
-                    <option value="3">Vị trí 3</option>
-                    <option value="4">Vị trí 4</option>
-                    <option value="5">Vị trí 5</option>
-                    <option value="6">Vị trí 6</option>
-                    <option value="7">Vị trí 7</option>
-                    <option value="8">Vị trí 8</option>
-                    <option value="9">Vị trí 9</option>
-                    <option value="10">Vị trí 10</option>
+                <h2 style="color: #e9d5ff; font-size: 18px; margin-bottom: 12px;">1. Cấu Hình Trận Đấu</h2>
+                
+                <label for="totalPlayers">Chọn số lượng người chơi (2 - 10 người):</label>
+                <select id="totalPlayers" onchange="updateSeatOptionsCH()">
+                    <option value="2">2 Người</option>
+                    <option value="3">3 Người</option>
+                    <option value="4">4 Người</option>
+                    <option value="5">5 Người</option>
+                    <option value="6">6 Người</option>
+                    <option value="7">7 Người</option>
+                    <option value="8">8 Người</option>
+                    <option value="9">9 Người</option>
+                    <option value="10" selected>10 Người</option>
                 </select>
+
+                <label for="mySeat">Chọn vị trí ngồi của Cát Huyền:</label>
+                <select id="mySeat"></select>
 
                 <label for="myRole">Chọn thân phận của Cát Huyền:</label>
                 <select id="myRole">
@@ -598,7 +606,7 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
                 
                 <div class="ch-dashboard">
                     <div>Tổng số tiêu ký tích lũy: <strong id="totalMarkers" style="color: #f1c40f; font-size: 20px;">0</strong></div>
-                    <div class="ch-status-hidden">🔒 Chi tiết tiêu ký Đỏ / Đen đang được ẩn bí mật!</div>
+                    <div class="ch-status-hidden">🔒 Chi tiết Tiêu ký Đỏ/Đen được giữ bí mật!</div>
                 </div>
 
                 <div class="ch-grid-seats" id="gameSeatsGrid"></div>
@@ -610,6 +618,13 @@ h1, h2 { margin: 0 0 8px; color: #e9d5ff; }
                 <!-- BẢNG KẾT QUẢ -->
                 <div id="resultBox" class="ch-result-box">
                     <div id="resultTitle" class="ch-result-title"></div>
+                    
+                    <!-- Đèn báo trạng thái Đỏ / Đen (Ản con số) -->
+                    <div class="ch-badge-container">
+                        <span id="badgeRed" class="ch-badge ch-badge-red">🔴 TIÊU KÝ ĐỎ</span>
+                        <span id="badgeBlack" class="ch-badge ch-badge-black">⚫ TIÊU KÝ ĐEN</span>
+                    </div>
+
                     <div id="resultDetail" class="ch-result-detail"></div>
                 </div>
             </div>
@@ -912,8 +927,9 @@ function selectSkillHT(type, skillName) {
 ['action', 'end', 'damage'].forEach(type => renderGridHT(type));
 
 /* -------------------------------------------------------------
-   LOGIC TOOL 3: CÁT HUYỀN
+   LOGIC TOOL 3: CÁT HUYỀN (CẬP NHẬT MỚI NHẤT)
 ------------------------------------------------------------- */
+let totalPlayersCount = 10;
 let catHuyenSeat = 1;
 let catHuyenRole = "";
 let playersCH = {}; 
@@ -921,10 +937,25 @@ let playersCH = {};
 let redMarkers = 0;   
 let blackMarkers = 0; 
 
+function updateSeatOptionsCH() {
+    const total = parseInt(document.getElementById('totalPlayers').value);
+    const seatSelect = document.getElementById('mySeat');
+    seatSelect.innerHTML = "";
+
+    for (let i = 1; i <= total; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.innerText = `Vị trí ${i}` + (i === 1 ? ' (Chủ Công)' : '');
+        seatSelect.appendChild(opt);
+    }
+}
+
 function setupCatHuyen() {
+    totalPlayersCount = parseInt(document.getElementById('totalPlayers').value);
     catHuyenSeat = parseInt(document.getElementById('mySeat').value);
     catHuyenRole = document.getElementById('myRole').value;
 
+    playersCH = {};
     playersCH[catHuyenSeat] = catHuyenRole;
 
     document.getElementById('step1').style.display = 'none';
@@ -937,8 +968,8 @@ function renderRoleInputsCH() {
     const container = document.getElementById('rolesInputContainer');
     container.innerHTML = "";
 
-    for (let i = 1; i <= 10; i++) {
-        if (i === catHuyenSeat) continue;
+    for (let i = 1; i <= totalPlayersCount; i++) {
+        if (i === catHuyenSeat) continue; 
 
         const div = document.createElement('div');
         div.className = 'ch-seat-card';
@@ -983,7 +1014,7 @@ function confirmRoleCH(seat) {
 
 function checkAllRolesEnteredCH() {
     let count = Object.keys(playersCH).length;
-    if (count === 10) {
+    if (count === totalPlayersCount) {
         document.getElementById('btnStartGame').disabled = false;
     }
 }
@@ -999,7 +1030,7 @@ function renderGameGridCH() {
     const grid = document.getElementById('gameSeatsGrid');
     grid.innerHTML = "";
 
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= totalPlayersCount; i++) {
         const card = document.createElement('div');
         card.className = `ch-seat-card ${i === catHuyenSeat ? 'me' : ''}`;
 
@@ -1046,27 +1077,42 @@ function luyenDan() {
     const resultBox = document.getElementById('resultBox');
     const title = document.getElementById('resultTitle');
     const detail = document.getElementById('resultDetail');
+    
+    const badgeRed = document.getElementById('badgeRed');
+    const badgeBlack = document.getElementById('badgeBlack');
 
     resultBox.style.display = 'block';
 
-    let markerInfo = `Tổng tiêu ký: <strong>${total}</strong> (<span class="ch-badge ch-badge-red">${redMarkers} Đỏ</span> / <span class="ch-badge ch-badge-black">${blackMarkers} Đen</span>)<br><br>`;
+    if (redMarkers > blackMarkers) {
+        badgeRed.className = "ch-badge ch-badge-red active";
+        badgeBlack.className = "ch-badge ch-badge-black inactive";
+    } else if (blackMarkers > redMarkers) {
+        badgeRed.className = "ch-badge ch-badge-red inactive";
+        badgeBlack.className = "ch-badge ch-badge-black active";
+    } else { 
+        badgeRed.className = "ch-badge ch-badge-red active";
+        badgeBlack.className = "ch-badge ch-badge-black active";
+    }
 
     if (total <= 3) {
         title.innerText = "🔮 Kỹ Năng: \"Anh Tư\"";
-        detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #ef4444; font-weight: bold;'>[Đào]</span>.";
+        detail.innerHTML = "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #ef4444; font-weight: bold;'>[Đào]</span>.";
     } else {
         if (redMarkers > blackMarkers) {
             title.innerText = "🔮 Kỹ Năng: \"Quan Tinh\"";
-            detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #f1c40f; font-weight: bold;'>[Vô Trung Sinh Hữu]</span>.";
+            detail.innerHTML = "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #f1c40f; font-weight: bold;'>[Vô Trung Sinh Hữu]</span>.";
         } else if (blackMarkers > redMarkers) {
             title.innerText = "🔮 Kỹ Năng: \"Trực Ngôn\"";
-            detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #3b82f6; font-weight: bold;'>[Thuận Thủ Khiên Dương]</span>.";
+            detail.innerHTML = "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #3b82f6; font-weight: bold;'>[Thuận Thủ Khiên Dương]</span>.";
         } else {
             title.innerText = "🔮 Kỹ Năng: \"Công Tâm\"";
-            detail.innerHTML = markerInfo + "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #ec4899; font-weight: bold;'>[Sát]</span> và <span style='color: #ef4444; font-weight: bold;'>[Quyết Đấu]</span>.";
+            detail.innerHTML = "<strong>Hiệu quả nhận được:</strong> Bạn nhận được lá <span style='color: #ec4899; font-weight: bold;'>[Sát]</span> và <span style='color: #ef4444; font-weight: bold;'>[Quyết Đấu]</span>.";
         }
     }
 }
+
+// Khởi tạo danh sách vị trí Tool Cát Huyền khi load
+updateSeatOptionsCH();
 </script>
 
 </body>
